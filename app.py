@@ -86,31 +86,14 @@ st.markdown("""
         color: #004d66 !important;
     }
 
-    /* تحسين الجداول و responsiveness */
-    .stDataFrame, .stTable, div[data-testid="stTable"] {
-        border-radius: 15px !important;
-        overflow: hidden !important;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+    /* Force minimum width and disable responsive scaling */
+    .stApp {
+        min-width: 1280px !important;
         overflow-x: auto !important;
-        display: block !important;
-        width: 100% !important;
     }
 
-    /* Mobile Responsive adjustments */
-    @media (max-width: 768px) {
-        [data-testid="stMetricValue"] {
-            font-size: 1.5rem !important;
-        }
-        h1 {
-            font-size: 1.8rem !important;
-        }
-        .stApp {
-            padding: 10px !important;
-        }
-        div.stButton > button:first-child {
-            height: 45px !important;
-            font-size: 0.9rem !important;
-        }
+    [data-testid="stAppViewContainer"] {
+        min-width: 1280px !important;
     }
 
     /* RTL specific fixes for Streamlit components */
@@ -129,6 +112,7 @@ st.markdown("""
         display: flex !important;
         justify-content: flex-start !important;
     }
+
 
     </style>
     """, unsafe_allow_html=True)
