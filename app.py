@@ -16,9 +16,10 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
     
     /* التنسيق العام والخطوط */
-    html, body, [class*="css"] {
+    html, body, [class*="css"], [data-testid="stAppViewContainer"] {
         font-family: 'Cairo', sans-serif !important;
-        direction: rtl;
+        direction: rtl !important;
+        text-align: right !important;
     }
 
     /* الخلفية الدافئة والمتميزة (Warm Background) */
@@ -85,18 +86,50 @@ st.markdown("""
         color: #004d66 !important;
     }
 
-    /* تحسين الجداول */
-    .stDataFrame {
+    /* تحسين الجداول و responsiveness */
+    .stDataFrame, .stTable, div[data-testid="stTable"] {
         border-radius: 15px !important;
         overflow: hidden !important;
         box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+        overflow-x: auto !important;
+        display: block !important;
+        width: 100% !important;
     }
 
-    /* الوضع الليلي */
+    /* Mobile Responsive adjustments */
+    @media (max-width: 768px) {
+        [data-testid="stMetricValue"] {
+            font-size: 1.5rem !important;
+        }
+        h1 {
+            font-size: 1.8rem !important;
+        }
+        .stApp {
+            padding: 10px !important;
+        }
+        div.stButton > button:first-child {
+            height: 45px !important;
+            font-size: 0.9rem !important;
+        }
+    }
+
+    /* RTL specific fixes for Streamlit components */
     [data-testid="stSidebar"] {
         background-color: rgba(255, 255, 255, 0.5) !important;
         backdrop-filter: blur(10px) !important;
+        text-align: right !important;
     }
+    [data-testid="stSidebarNav"] {
+        direction: rtl !important;
+    }
+    .stMetric {
+        text-align: right !important;
+    }
+    div[data-testid="stMetricLabel"] {
+        display: flex !important;
+        justify-content: flex-start !important;
+    }
+
     </style>
     """, unsafe_allow_html=True)
 
@@ -323,7 +356,7 @@ def main_app(Session):
                 color = 'red' if val < 5 else 'black'
                 return f'color: {color}'
             
-            st.dataframe(df_items.style.applymap(highlight_low_stock, subset=['الكمية']), use_container_width=True)
+            st.dataframe(df_items.style.map(highlight_low_stock, subset=['الكمية']), use_container_width=True)
             
             # تصدير إكسيل للمخزن
             excel_data = export_to_excel(df_items, "المخزن", "inventory.xlsx")
